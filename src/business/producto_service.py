@@ -43,6 +43,12 @@ def registrar_producto(nombre, unidad, precio_compra, precio_venta, stock, stock
             print("La categoría no es válida.")
             return None
 
+        categorias = listar_categorias()
+
+        if not any(categoria["cat_id"] == cat_id for categoria in categorias):
+            print("La categoría seleccionada no existe.")
+            return None
+
         nuevo_id = insertar_producto(
             nombre,
             unidad,

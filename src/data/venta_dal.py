@@ -15,6 +15,7 @@ def registrar_venta(detalles):
 
         total = Decimal("0.00")
         productos = []
+        cantidades_acumuladas = {}
 
         # Verificar existencias y obtener precios
         for detalle in detalles:
@@ -41,11 +42,16 @@ def registrar_venta(detalles):
             if cantidad <= 0:
                 raise Exception("La cantidad debe ser mayor que cero.")
 
-            if stock < cantidad:
+            cantidad_acumulada = (
+                 cantidades_acumuladas.get(prod_id, Decimal("0.00")) + cantidad
+            )
+
+            if stock < cantidad_acumulada:
                 raise Exception(
                     f"Existencias insuficientes para el producto {prod_id}."
                 )
 
+            cantidades_acumuladas[prod_id] = cantidad_acumulada
             subtotal = cantidad * precio
             total += subtotal
 
